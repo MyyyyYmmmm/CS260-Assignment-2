@@ -1,0 +1,108 @@
+#ifndef _marbleBag_
+#define _marbleBag_
+
+typedef  int typeOfBag;
+
+class marbleBag {
+
+private:
+   int tally;     // mmarbles in the bag
+   typeOfBag  data[20];  // data store till twenty members (marbles)
+
+public:
+           marbleBag();             // Constructor
+   bool    place(typeOfBag);  // Insert a marble in the marble bag
+   bool    take_out(typeOfBag);  // Delete member from member bag
+   int     size();            // total number of marbles inside the bag
+   void    empty();           // remove every single marble in the marble bag
+   bool    inbag(typeOfBag);   // is a member in the bag?
+   int     No(typeOfBag); // No of marble in the bag.
+};
+#endif
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+marbleBag::marbleBag()    // Constructor
+{
+   // Marble bag's initial state
+   tally=0;
+}
+
+void marbleBag::empty()  // empty the bag
+{
+   tally=0;
+}
+
+bool marbleBag::place(typeOfBag value) //Place a value in Bag
+{
+   bool response;
+   if(tally <20 ) {
+      data[tally]=value;
+      response=true;
+      tally++;
+   } else {
+      response=false;
+   }
+   return response;
+}
+
+bool marbleBag::inbag(typeOfBag value)  // Is a marble in the marble bag?
+{
+   bool response=false;
+   int  inx;
+   for(inx=0;inx<tally&& !response;inx++)
+      if(data[inx] == value) response=true;
+   return response;
+}
+
+int marbleBag::No(typeOfBag value) //How many of element;
+{
+   int many=0;
+   int inx;
+   for(inx=0;inx<tally;inx++)
+      if(data[inx]==value) many++;
+   return many;
+}
+
+bool marbleBag::take_out(typeOfBag value)  // Remove a marble
+{
+   bool response=false;
+   int  inx;
+   if(No(value) == 0) return response;
+   response=true;
+   inx=0;
+   while(data[inx] != value) inx++;
+   for(;inx<tally;inx++)
+      data[inx]=data[inx+1];
+   tally--;
+}
+
+int marbleBag::size()    // How many elements in bag?
+{
+   return tally;
+}
+
+
+int main(int argCount, char *argValues[])
+{
+  marbleBag m;
+  typeOfBag value;
+
+  cout << "Bag" << endl;
+  m.place(4);
+  do {
+     value=rand()%6 +1;
+  } while(m.place(value));
+  cout << m.size()<< " Bag elements" << endl;
+  cout << m.No(4) << " fours " << endl;
+  m.take_out(4);
+  cout << m.size()<< " elements in the bag" << endl;
+  cout << m.No(4) << " fours " << endl;
+  cout << m.No(5) << " fives " << endl;
+  while(m.inbag(5)) m.take_out(5);
+  cout << m.No(5) << " fives " << endl;
+  
+  return 0;
+}
+
